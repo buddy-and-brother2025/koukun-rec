@@ -243,18 +243,19 @@
       });
     }
 
-    function clearInputs() {
-      document.getElementById('date').value = '';
-      document.getElementById('temp').value = '';
-      document.getElementById('feverTime').value = '';
-      document.getElementById('duration').value = '';
-      document.getElementById('appetite').value = '';
-      document.getElementById('sleep').value = '';
-      document.getElementById('excretion').value = '';
-      document.getElementById('symptoms').value = '';
-      document.getElementById('mood').value = '';
-      document.getElementById('notes').value = '';
+   function clearInputs() {
+  // IDを管理する配列
+  const ids = ['date', 'temp', 'feverTime', 'duration', 'appetite', 'sleep', 'excretion', 'symptoms', 'mood', 'notes'];
+
+  // 各IDに対して、要素が存在する場合に値をクリア
+  ids.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) { // 要素が見つかった場合のみ実行
+      element.value = ''; // 入力内容をクリア
     }
+  });
+}
+
   </script>
 </body>
 </html>
