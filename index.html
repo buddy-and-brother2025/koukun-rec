@@ -209,30 +209,81 @@
   </div>
 
   <script>
-    function submitForm() {
-      const formData = {
-        date: document.getElementById('date').value,
-        temp: document.getElementById('temp').value,
-        feverTime: document.getElementById('feverTime').value,
-        duration: document.getElementById('duration').value,
-        appetite: document.getElementById('appetite').value,
-        sleep: document.getElementById('sleep').value,
-        excretion: document.getElementById('excretion').value,
-        symptoms: document.getElementById('symptoms').value,
-        mood: document.getElementById('mood').value,
-        notes: document.getElementById('notes').value
-      };
+     const scriptURL = 'https://script.google.com/macros/s/AKfycbyFdealcsxpSEzBMDVMn8ETpdeVtP5hrDpeVzSDM9NU9apnGP_vfUCTW59vpPOzYbPv/exec';
 
-      // ここにスプレッドシート送信用のAPIエンドポイントを入れてね
-      fetch('https://script.google.com/macros/s/YOUR_SCRIPT_URL/exec', {
-        method: 'POST',
-        body: JSON.stringify(formData),
-        headers: { 'Content-Type': 'application/json' }
-      })
-      .then(response => response.json())
-      .then(data => alert('データが送信されました'))
-      .catch(error => alert('送信に失敗しました'));
+  function getRatio() {
+    let custom = document.getElementById('customRatio').value;
+    if (custom.includes('/')) {
+      let parts = custom.split('/');
+      return parseFloat(parts[0]) / parseFloat(parts[1]);
+    } else if (!isNaN(custom) && custom !== '') {
+      return parseFloat(custom);
+    } else {
+      return null;
     }
+  }
+
+  function setPresetRatio() {
+    let preset = document.getElementById('presetRatio').value;
+    document.getElementById('customRatio').value = preset;
+    clearInputs();
+  }
+
+  function calculateFromHeight() {
+    let height = parseFloat(document.getElementById('height').value);
+    let ratio = getRatio();
+    if (!isNaN(height) && ratio !== null) {
+      document.getElementById('width').value = Math.round(height * ratio);
+    } else {
+      document.getElementById('width').value = '';
+    }
+  }
+
+  function calculateFromWidth() {
+    let width = parseFloat(document.getElementById('width').value);
+    let ratio = getRatio();
+    if (!isNaN(width) && ratio !== null) {
+      document.getElementById('height').value = Math.round(width / ratio);
+    } else {
+      document.getElementById('height').value = '';
+    }
+  }
+
+  function calculateFromInput() {
+    if (document.getElementById('height').value !== '') {
+      calculateFromHeight();
+    } else if (document.getElementById('width').value !== '') {
+      calculateFromWidth();
+    }
+  }
+
+  function clearInputs() {
+    document.getElementById('height').value = '';
+    document.getElementById('width').value = '';
+  }
+
+  function submitForm() {
+    const data = {
+      ratio: document.getElementById('customRatio').value,
+      height: document.getElementById('height').value,
+      width: document.getElementById('width').value
+    };
+
+    fetch(scriptURL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(() => {
+      alert('送信完了しました！');
+      clearInputs();
+    })
+    .catch(error => {
+      alert('送信に失敗しました。もう一度試してください。');
+      console.error('送信エラー', error);
+    });
+  }
   </script>
 </body>
 </html>
