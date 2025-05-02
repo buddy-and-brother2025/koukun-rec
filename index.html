@@ -262,28 +262,24 @@
     document.getElementById('width').value = '';
   }
 
-  function submitForm() {
-    const data = {
-      ratio: document.getElementById('customRatio').value,
-      height: document.getElementById('height').value,
-      width: document.getElementById('width').value
-    };
-
-    fetch(scriptURL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-    .then(() => {
-      alert('送信完了しました！');
-      clearInputs();
-    })
-    .catch(error => {
-      alert('送信に失敗しました。もう一度試してください。');
-      console.error('送信エラー', error);
-    });
-  }
+  function submitToSheet(data) {
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbyFdealcsxpSEzBMDVMn8ETpdeVtP5hrDpeVzSDM9NU9apnGP_vfUCTW59vpPOzYbPv/exec';
+  
+  fetch(scriptURL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(() => {
+    alert('送信完了しました！');
+    clearInputs();
+  })
+  .catch(error => {
+    alert('送信に失敗しました。もう一度試してください。');
+    console.error('送信エラー', error);
+  });
+}
   </script>
 </body>
 </html>
