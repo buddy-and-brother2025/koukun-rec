@@ -212,36 +212,38 @@
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyFdealcsxpSEzBMDVMn8ETpdeVtP5hrDpeVzSDM9NU9apnGP_vfUCTW59vpPOzYbPv/exec';
 
     function submitToSheet() {
-      // フォームから値を取得
-      const data = {
-        date: document.getElementById('date').value,
-        temp: document.getElementById('temp').value,
-        feverTime: document.getElementById('feverTime').value,
-        duration: document.getElementById('duration').value,
-        appetite: document.getElementById('appetite').value,
-        sleep: document.getElementById('sleep').value,
-        excretion: document.getElementById('excretion').value,
-        symptoms: document.getElementById('symptoms').value,
-        mood: document.getElementById('mood').value,
-        notes: document.getElementById('notes').value
-      };
+  // フォームの値をまとめてdataオブジェクトに格納
+  const data = {
+    date: document.getElementById('date').value,
+    temp: document.getElementById('temp').value,
+    feverTime: document.getElementById('feverTime').value,
+    duration: document.getElementById('duration').value,
+    appetite: document.getElementById('appetite').value,
+    sleep: document.getElementById('sleep').value,
+    excretion: document.getElementById('excretion').value,
+    symptoms: document.getElementById('symptoms').value,
+    mood: document.getElementById('mood').value,
+    notes: document.getElementById('notes').value
+  };
 
-      // Google Apps Scriptにデータを送信
-      fetch(scriptURL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      })
-      .then(() => {
-        alert('送信完了しました！');
-        clearInputs();
-      })
-      .catch(error => {
-        alert('送信に失敗しました。もう一度試してください。');
-        console.error('送信エラー', error);
-      });
-    }
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbyFdealcsxpSEzBMDVMn8ETpdeVtP5hrDpeVzSDM9NU9apnGP_vfUCTW59vpPOzYbPv/exec';
+
+  // データ送信
+  fetch(scriptURL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(() => {
+    alert('送信完了しました！');
+    clearInputs();  // 入力フォームをクリア
+  })
+  .catch(error => {
+    alert('送信に失敗しました。もう一度試してください。');
+    console.error('送信エラー', error);
+  });
+}
 
    function clearInputs() {
   // IDを管理する配列
